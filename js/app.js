@@ -1,23 +1,47 @@
-function guardar(){
+async function guardar() {
 
-let datos={
+    const datos = {
+        incidencia: document.getElementById("incidencia").value,
+        nodo: document.getElementById("nodo").value,
+        olt: document.getElementById("olt").value,
+        responsable: document.getElementById("responsable").value,
+        fecha: document.getElementById("fecha").value,
+        hora: document.getElementById("hora").value
+    };
 
-incidencia:document.getElementById("incidencia").value,
+    try {
 
-nodo:document.getElementById("nodo").value,
+        const respuesta = await fetch("PEGA_AQUI_TODA_TU_URL", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datos)
+        });
 
-olt:document.getElementById("olt").value,
+        if (respuesta.ok) {
 
-responsable:document.getElementById("responsable").value,
+            alert("✅ Registro guardado correctamente.");
 
-fecha:document.getElementById("fecha").value,
+            // Limpiar formulario
+            document.getElementById("incidencia").value = "";
+            document.getElementById("nodo").value = "";
+            document.getElementById("olt").value = "";
+            document.getElementById("responsable").value = "";
+            document.getElementById("fecha").value = "";
+            document.getElementById("hora").value = "";
 
-hora:document.getElementById("hora").value
+        } else {
 
-};
+            const error = await respuesta.text();
+            alert("❌ Error al guardar:\n" + error);
 
-console.log(datos);
+        }
 
-alert("Registro listo para enviar");
+    } catch (e) {
 
+        console.error(e);
+        alert("❌ No se pudo conectar con Power Automate.");
+
+    }
 }
